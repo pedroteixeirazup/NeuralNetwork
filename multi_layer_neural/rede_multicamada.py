@@ -11,20 +11,26 @@ def sigmoidDerivada(sig):
 # print(a)
 # print(b)
 
-entradas = np.array([[0,0],
+entradas = np.array([[0,0], #Operador XOR
                      [0,1],
                      [1,0],
                      [1,1]])
 
-saidas = np.array([[0], [1], [1], [0]])
+saidas = np.array([[0], [1], [1], [0]]) #Operador XOR
 
-pesos0 = np.array([[-0.424, -0.740, -0.961],
-                    [0.358, -0.577, -0.469]]) #pesos da camada de entrada para a oculta
+# pesos0 = np.array([[-0.424, -0.740, -0.961],
+#                     [0.358, -0.577, -0.469]]) #pesos da camada de entrada para a oculta
 
-pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #pesos da camada oculta para a saida
+# pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #pesos da camada oculta para a saida
 
-epocas = 100
-taxaAprendizagem = 0.3
+
+pesos0 = 2*np.random.random((2,3)) - 1
+pesos1 = 2*np.random.random((3,1)) - 1
+
+print(pesos0)
+print(pesos1)
+epocas = 1000000
+taxaAprendizagem = 0.6
 momento = 1
 
 for j in range(epocas):
@@ -37,6 +43,7 @@ for j in range(epocas):
 
     erroCamadaSaida = saidas - camadaSaida
     mediaAbsoluta = np.mean(np.abs(erroCamadaSaida))
+    print("Erro: " + str(mediaAbsoluta))
 
     derivadaSaida = sigmoidDerivada(camadaSaida)
     deltaSaida = erroCamadaSaida * derivadaSaida       
@@ -49,4 +56,8 @@ for j in range(epocas):
     pesosNovo1 = camadaOcultaTransposta.dot(deltaSaida)
     pesos1 = (pesos1 * momento) + (pesosNovo1 * taxaAprendizagem) #backpropagation
 
-print(pesos1)
+    camadaEntradaTransposta = camadaEntrada.T 
+    pesosNovo0 = camadaEntradaTransposta.dot(deltaCamadaOculta)
+    pesos0 = (pesos0 * momento) +  (pesosNovo0 * taxaAprendizagem)
+
+# print(pesos0)
